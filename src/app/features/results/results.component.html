@@ -1,0 +1,68 @@
+<div class="results-container">
+  <h1>🔍 Resultados da Busca</h1>
+
+  <div *ngIf="loading" class="loading-container">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <p *ngIf="error" class="error">{{ error }}</p>
+
+  <div class="filter-container">
+    <mat-form-field appearance="fill">
+      <mat-label>Ordenar por</mat-label>
+      <mat-select [(value)]="sortBy" (selectionChange)="sortUsers()">
+        <mat-option value="name-asc">Nome (A-Z)</mat-option>
+        <mat-option value="name-desc">Nome (Z-A)</mat-option>
+        <mat-option value="followers-asc">Seguidores (Menos para Mais)</mat-option>
+        <mat-option value="followers-desc">Seguidores (Mais para Menos)</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <ng-container *ngIf="users && users.length > 0; else noResults">
+    <div class="user-grid">
+      <mat-card *ngFor="let user of users" class="user-card">
+        <img
+          mat-card-image
+          [src]="user.avatar_url"
+          alt="Foto de {{ user.name || user.login }}"
+          class="user-avatar"
+        />
+
+        <mat-card-header>
+          <mat-card-title>
+            {{ user.name && user.name.trim() !== '' ? user.name : user.login }}
+          </mat-card-title>
+          <mat-card-subtitle>{{ user.login }}</mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+          <p *ngIf="user.bio && user.bio.trim() !== '' else noBio">
+            {{ user.bio }}
+          </p>
+          <ng-template #noBio>
+            <p>📝 Sem descrição disponível</p>
+          </ng-template>
+
+          <p>📍 {{ user.location || 'Localização não informada' }}</p>
+        </mat-card-content>
+
+        <mat-card-actions class="user-stats">
+          <span>👥 Seguidores: {{ user.followers }}</span>
+          <span>🔄 Seguindo: {{ user.following }}</span>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+
+    <mat-paginator
+      [length]="totalResults"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="[5, 10, 20]"
+      (page)="onPageChange($event)">
+    </mat-paginator>
+  </ng-container>
+
+  <ng-template #noResults>
+    <p class="no-results">Nenhum usuário encontrado.</p>
+  </ng-template>
+</div>

@@ -1,0 +1,68 @@
+.results-container {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centraliza os elementos filhos */
+  width: 100%;
+}
+
+.filter-container {
+  margin-bottom: 16px;
+  width: 100%;
+  max-width: 400px; /* Limita a largura para evitar que fique muito esticado */
+  display: flex;
+  justify-content: center; /* Centraliza o filtro */
+}
+
+mat-form-field {
+  width: 100%; /* Faz o dropdown ocupar toda a largura do container */
+}
+
+.user-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* Centraliza os cards */
+  gap: 16px;
+  width: 100%;
+  max-width: 1200px; /* Evita que os cards fiquem muito espalhados */
+}
+
+.user-card {
+  width: 300px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+}
+
+.user-avatar {
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+}
+
+.user-stats {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 8px;
+}
+
+.no-results {
+  text-align: center;
+  font-size: 18px;
+  color: gray;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.error {
+  color: red;
+  font-weight: bold;
+  text-align: center;
+}

@@ -1,0 +1,10 @@
+<mat-toolbar color="primary">Busca de Repositórios</mat-toolbar>
+
+<div class="search-container">
+  <mat-form-field appearance="outline">
+    <mat-label>Pesquisar Repositório</mat-label>
+    <input matInput [(ngModel)]="searchQuery" (keyup.enter)="search()" />
+  </mat-form-field>
+
+  <button mat-raised-button color="accent" (click)="search()">Buscar</button>
+</div>

@@ -1,0 +1,38 @@
+.header-toolbar {
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+  }
+  
+  .logo {
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .spacer {
+    flex: 1;
+  }
+  
+  /* Esconde o menu mobile em telas grandes */
+  .menu-mobile {
+    display: none;
+  }
+  
+  /* Mostra o menu desktop */
+  .menu-desktop {
+    display: flex;
+    gap: 16px;
+  }
+  
+  /* Responsividade */
+  @media (max-width: 768px) {
+    .menu-desktop {
+      display: none;
+    }
+    
+    .menu-mobile {
+      display: block;
+    }
+  }
+  

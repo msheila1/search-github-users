@@ -1,0 +1,21 @@
+<mat-toolbar color="primary" class="header-toolbar">
+  <span class="logo" (click)="goToHome()">Search GitHub User</span>
+
+  <span class="spacer"></span>
+
+  <nav class="menu-desktop">
+    <button mat-button routerLink="/">Buscar</button>
+    <button mat-button routerLink="/results">Resultados</button>
+    <button mat-button routerLink="/repository/1">Detalhes</button>
+  </nav>
+
+  <button mat-icon-button [matMenuTriggerFor]="menu" class="menu-mobile">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item routerLink="/">Buscar</button>
+    <button mat-menu-item routerLink="/results">Resultados</button>
+    <button mat-menu-item routerLink="/repository/1">Detalhes</button>
+  </mat-menu>
+</mat-toolbar>
