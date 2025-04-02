@@ -4,13 +4,13 @@ import { GithubService } from '../../core/services/github.service';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
-import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { HttpClientModule } from '@angular/common/http';
-import { User } from '../../core/models/user.model';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select'; // Importação corrigida
+import { MatSelectModule } from '@angular/material/select';
+import { FormsModule } from '@angular/forms';
+import { GithubUser } from '../../core/github-user.model';
 
 @Component({
   selector: 'app-results',
@@ -19,25 +19,25 @@ import { MatSelectModule } from '@angular/material/select'; // Importação corr
     CommonModule,
     HttpClientModule,
     MatCardModule,
-    MatListModule,
     MatIconModule,
     MatProgressSpinnerModule,
-    MatPaginator,
     MatFormFieldModule,
-    MatSelectModule, // Adicionado para funcionar o mat-select
+    MatSelectModule,
+    FormsModule
   ],
   templateUrl: './results.component.html',
   styleUrls: ['./results.component.scss'],
+  providers: [GithubService],
 })
 export class ResultsComponent implements OnInit {
-  users: User[] = [];
+  users: GithubUser[] = [];
   searchQuery: string = '';
   loading: boolean = false;
   error: string = '';
   totalResults: number = 0;
   pageSize: number = 10;
   pageIndex: number = 0;
-  sortBy: string = 'followers-desc'; // Ordenação padrão
+  sortBy: string = 'followers-desc';
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -58,31 +58,38 @@ export class ResultsComponent implements OnInit {
   }
 
   fetchUsers() {
-    if (!this.searchQuery.trim()) {
-      console.warn('⚠️ Consulta vazia, busca não será feita.');
-      return;
-    }
+    if (!this.searchQuery.trim()) return;
 
     this.loading = true;
     this.error = '';
 
-    console.log('🔍 Buscando usuários para:', this.searchQuery);
-
-    this.githubService
-      .searchUsers(this.searchQuery, this.pageIndex + 1, this.pageSize)
+    this.githubService.searchUsers(this.searchQuery, this.pageIndex + 1, this.pageSize)
       .subscribe({
-        next: (users) => {
-          console.log('🔹 API Response:', users);
-          this.users = users;
-          this.totalResults = users.length;
-          this.sortUsers(); // Aplica ordenação ao receber os dados
+        next: (response) => {
+          if (response && Array.isArray(response.items)) {
+            this.users = response.items.map((user: any) => ({
+              login: user.login ?? '',
+              avatar_url: user.avatar_url ?? '',
+              html_url: user.html_url ?? '',
+              followers: user.followers ?? 0,
+              following: user.following ?? 0,
+              name: user.name ?? '',
+              bio: user.bio ?? '',
+              location: user.location ?? '',
+              public_repos: user.public_repos ?? 0
+            }));
+
+            this.totalResults = response.total_count || this.users.length;
+            this.sortUsers();
+          } else {
+            this.error = 'Resposta inesperada da API.';
+          }
           this.loading = false;
         },
-        error: (err) => {
-          console.error('❌ Erro ao buscar usuários:', err);
+        error: () => {
           this.error = 'Erro ao buscar usuários. Tente novamente mais tarde.';
           this.loading = false;
-        },
+        }
       });
   }
 
@@ -99,14 +106,12 @@ export class ResultsComponent implements OnInit {
   }
 
   sortUsers() {
-    if (!this.users) return;
-
     switch (this.sortBy) {
       case 'name-asc':
-        this.users.sort((a, b) => (a.name || a.login).localeCompare(b.name || b.login));
+        this.users.sort((a, b) => a.login.localeCompare(b.login));
         break;
       case 'name-desc':
-        this.users.sort((a, b) => (b.name || b.login).localeCompare(a.name || a.login));
+        this.users.sort((a, b) => b.login.localeCompare(a.login));
         break;
       case 'followers-asc':
         this.users.sort((a, b) => a.followers - b.followers);
@@ -115,5 +120,9 @@ export class ResultsComponent implements OnInit {
         this.users.sort((a, b) => b.followers - a.followers);
         break;
     }
+  }
+
+  navigateToRepository(user: GithubUser) {
+    this.router.navigate(['/repository', user.login]);
   }
 }

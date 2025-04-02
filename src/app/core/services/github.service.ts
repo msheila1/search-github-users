@@ -1,42 +1,60 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, forkJoin } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
-import { User } from '../models/user.model';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment'; // Certifique-se de que o environment está configurado corretamente
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root',
+})
 export class GithubService {
-  private baseUrl = 'https://api.github.com/search/users';
-  private userDetailsUrl = 'https://api.github.com/users';
+  private readonly API_URL = 'https://api.github.com';
 
   constructor(private http: HttpClient) {}
 
-  searchUsers(query: string, page: number, pageSize: number): Observable<User[]> {
-    const url = `${this.baseUrl}?q=${query}&page=${page}&per_page=${pageSize}`;
-    
-    return this.http.get<{ items: any[] }>(url).pipe(
-      switchMap((response) => {
-        const userRequests = response.items.map((user) => 
-          this.getUserDetails(user.login)
-        );
-        return forkJoin(userRequests);
-      })
-    );
+  private getHeaders(): HttpHeaders {
+    return new HttpHeaders({
+      Authorization: `Bearer ${environment.githubToken}`, // Usa o token do environment
+      Accept: 'application/vnd.github.v3+json',
+    });
   }
 
-  getUserDetails(username: string): Observable<User> {
-    return this.http.get<any>(`${this.userDetailsUrl}/${username}`).pipe(
-      map(user => ({
-        id: user.id,
-        login: user.login,
-        name: user.name || user.login,
-        bio: user.bio || 'Sem biografia disponível',
-        followers: user.followers || 0,
-        following: user.following || 0,
-        public_repos: user.public_repos || 0,
-        location: user.location || 'Localização não informada',
-        avatar_url: user.avatar_url
-      }))
-    );
+  /**
+   * Busca usuários no GitHub com base no termo de pesquisa.
+   * @param query Nome do usuário
+   * @param page Número da página
+   * @param pageSize Itens por página
+   * @returns Observable com a lista de usuários
+   */
+  searchUsers(query: string, page: number, pageSize: number): Observable<any> {
+    const url = `${this.API_URL}/search/users?q=${query}&page=${page}&per_page=${pageSize}`;
+    return this.http.get<any>(url, { headers: this.getHeaders() });
+  }
+
+  /**
+   * Obtém os detalhes de um usuário do GitHub.
+   * @param username Nome do usuário no GitHub
+   * @returns Observable com os detalhes do usuário
+   */
+  getUserDetails(username: string): Observable<any> {
+    return this.http.get<any>(`${this.API_URL}/users/${username}`, { headers: this.getHeaders() });
+  }
+
+  /**
+   * Obtém os repositórios públicos de um usuário no GitHub.
+   * @param owner Nome do usuário no GitHub
+   * @returns Observable com a lista de repositórios
+   */
+  getUserRepositories(owner: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.API_URL}/users/${owner}/repos`, { headers: this.getHeaders() });
+  }
+
+  /**
+   * Obtém detalhes de um repositório específico.
+   * @param owner Nome do dono do repositório
+   * @param repo Nome do repositório
+   * @returns Observable com os detalhes do repositório
+   */
+  getRepositoryDetails(owner: string, repo: string): Observable<any> {
+    return this.http.get<any>(`${this.API_URL}/repos/${owner}/${repo}`, { headers: this.getHeaders() });
   }
 }

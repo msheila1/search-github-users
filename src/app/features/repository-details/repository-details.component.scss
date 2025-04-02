@@ -1,0 +1,39 @@
+.repository-container {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  h1 {
+    font-size: 24px;
+    color: #333;
+  }
+  
+  .owner-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-top: 10px;
+  }
+  
+  .stats {
+    margin-top: 10px;
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+  }
+  
+  .repo-link {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+  }
+  
+  .repo-link:hover {
+    background-color: #0056b3;
+  }
+  

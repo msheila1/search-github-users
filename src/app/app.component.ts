@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterModule, provideRouter } from '@angular/router';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { routes } from './app.routes';
@@ -10,14 +10,11 @@ import { FooterComponent } from './core/components/footer/footer.component';
   selector: 'app-root',
   standalone: true,
   imports: [RouterModule, HttpClientModule, HeaderComponent, FooterComponent],
-  template: `
-    <app-header></app-header>
-    <router-outlet></router-outlet>
-    <app-footer></app-footer>
-  `,
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {}
 
 bootstrapApplication(AppComponent, {
-  providers: RouterModule.forRoot(routes).providers ?? [],
+  providers: [provideRouter(routes)],
 });
