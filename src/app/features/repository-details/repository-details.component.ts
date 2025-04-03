@@ -5,13 +5,14 @@ import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { Repository } from '../../core/models/repository.model';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-repository-detail',
   standalone: true,
   imports: [
     CommonModule,
+    HttpClientModule,
     MatCardModule,
     MatButtonModule,
     MatProgressSpinnerModule
@@ -21,53 +22,34 @@ import { Repository } from '../../core/models/repository.model';
   providers: [GithubService]
 })
 export class RepositoryDetailComponent implements OnInit {
-  repository: Repository | null = null;
-  login: string = '';
+  username: string = '';
+  repositories: any[] = [];
   loading: boolean = false;
   error: string = '';
 
-  constructor(
-    private route: ActivatedRoute,
-    private githubService: GithubService
-  ) {}
+  constructor(private route: ActivatedRoute, private githubService: GithubService) {}
 
   ngOnInit() {
-    this.route.paramMap.subscribe(params => {
-      this.login = params.get('login') || '';
-      console.log('🔹 Login recebido na URL:', this.login);
-
-      if (this.login) {
-        this.fetchRepository();
-      } else {
-        this.error = 'Usuário não encontrado!';
+    this.route.params.subscribe(params => {
+      this.username = params['username'];
+      if (this.username) {
+        this.fetchRepositories();
       }
     });
   }
 
-  fetchRepository() {
+  fetchRepositories() {
     this.loading = true;
-    this.error = '';
-
-    this.githubService.getUserRepositories(this.login).subscribe({
+    this.githubService.getUserRepositories(this.username).subscribe({
       next: (repos) => {
-        console.log('🔹 Repositórios encontrados:', repos);
-        if (repos.length > 0) {
-          this.repository = repos[0];
-        } else {
-          this.error = 'Nenhum repositório encontrado.';
-          this.repository = null;
-        }
+        this.repositories = repos;
         this.loading = false;
       },
       error: (err) => {
         console.error('❌ Erro ao buscar repositórios:', err);
-        this.error = 'Erro ao carregar os repositórios.';
-        this.repository = null;
+        this.error = 'Erro ao carregar repositórios.';
         this.loading = false;
       }
     });
-  }
-  openRepositoryUrl(url: string) {
-    window.open(url, '_blank');
   }
 }

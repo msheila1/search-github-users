@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { GithubService } from '../../core/services/github.service';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { CommonModule } from '@angular/common';
@@ -24,7 +24,8 @@ import { FormsModule } from '@angular/forms';
     MatFormFieldModule,
     MatSelectModule,
     FormsModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    RouterModule
   ],
   templateUrl: './results.component.html',
   styleUrls: ['./results.component.scss'],
@@ -61,47 +62,51 @@ export class ResultsComponent implements OnInit {
 
   fetchUsers() {
     if (!this.searchQuery.trim()) return;
-  
+
     this.loading = true;
     this.error = '';
-  
+
     this.githubService.searchUsers(this.searchQuery, this.pageIndex + 1, this.pageSize)
       .subscribe({
-        next: (response) => {
+        next: async (response) => {
           if (response && Array.isArray(response.items)) {
             const usersList = response.items;
-  
-            // Buscar detalhes de cada usuário
-            const userDetailsRequests = usersList.map((user: any) =>
-              this.githubService.getUserDetails(user.login).toPromise()
-            );
-  
-            Promise.all(userDetailsRequests).then((detailedUsers) => {
-              this.users = detailedUsers.map((user: any) => ({
-                id: user.id,
-                login: user.login,
-                name: user.name || user.login,
-                avatar_url: user.avatar_url,
-                bio: user.bio || 'Nenhuma bio disponível',
-                followers: user.followers || 0,
-                following: user.following || 0,
-                public_repos: user.public_repos || 0,
-                location: user.location || 'Desconhecido',
-                html_url: user.html_url,
-                profile_image: user.avatar_url, // Se necessário
-                stars: user.stars || 0,  // Se necessário
-                repos: user.repos || []  // Se necessário
-              }));
-  
+
+            try {
+              const userDetailsResponses = await Promise.allSettled(
+                usersList.map((user: any) => this.githubService.getUserDetails(user.login).toPromise())
+              );
+
+              this.users = userDetailsResponses
+                .filter(result => result.status === 'fulfilled')
+                .map((result: any) => {
+                  const user = result.value;
+                  return {
+                    id: user.id,
+                    username: user.name || user.login,
+                    login: user.login,
+                    name: user.name || user.login,
+                    avatar_url: user.avatar_url,
+                    bio: user.bio || 'Nenhuma bio disponível',
+                    followers: user.followers || 0,
+                    following: user.following || 0,
+                    public_repos: user.public_repos || 0,
+                    location: user.location || 'Desconhecido',
+                    html_url: user.html_url,
+                    profile_image: user.avatar_url,
+                    stars: user.stars || 0,
+                    repos: user.repos || [],
+                  };
+                });
+
               this.totalResults = response.total_count || this.users.length;
-              this.sortUsers();  // Aplica a ordenação inicial
+              this.sortUsers();
               this.loading = false;
-            }).catch((error) => {
+            } catch (error) {
               this.error = 'Erro ao buscar detalhes dos usuários.';
               console.error('❌ Erro ao buscar detalhes:', error);
               this.loading = false;
-            });
-  
+            }
           } else {
             this.error = 'Resposta inesperada da API.';
             console.error('❌ Resposta inesperada:', response);
@@ -115,8 +120,7 @@ export class ResultsComponent implements OnInit {
         }
       });
   }
-  
-  
+
   onPageChange(event: PageEvent) {
     this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
@@ -143,11 +147,9 @@ export class ResultsComponent implements OnInit {
     } else if (this.sortBy === 'stars-desc') {
       this.users.sort((a, b) => (b.stars ?? 0) - (a.stars ?? 0));
     }
-  
-    // Atualiza a exibição de usuários paginados após a ordenação
+
     this.updatePaginatedUsers();
   }
-  
 
   updatePaginatedUsers() {
     const startIndex = this.pageIndex * this.pageSize;
@@ -155,7 +157,7 @@ export class ResultsComponent implements OnInit {
     this.paginatedUsers = this.users.slice(startIndex, endIndex);
   }
 
-  goToRepository(login: string) {
-    this.router.navigate(['/repository', login]);
+  goToRepository(username: string) {
+    this.router.navigate([`/repository`, username]);
   }
 }

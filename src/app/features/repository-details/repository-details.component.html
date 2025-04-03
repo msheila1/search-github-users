@@ -1,21 +1,16 @@
-<div *ngIf="loading" class="loading">
+<h2>Repositórios de {{ username }}</h2>
+
+<div *ngIf="loading">
   <mat-spinner></mat-spinner>
 </div>
 
-<div *ngIf="error" class="error-message">
-  {{ error }}
+<div *ngIf="error">
+  <p class="error">{{ error }}</p>
 </div>
 
-<mat-card *ngIf="repository">
-  <mat-card-header>
-    <mat-card-title>{{ repository.name }}</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <p><strong>Descrição:</strong> {{ repository.description || 'Sem descrição' }}</p>
-    <p><strong>Estrelas:</strong> {{ repository.stargazers_count }}</p>
-    <p><strong>Forks:</strong> {{ repository.forks_count }}</p>
-  </mat-card-content>
-  <mat-card-actions>
-    <button mat-button color="primary" (click)="openRepositoryUrl(repository.html_url)">Ver no GitHub</button>
-  </mat-card-actions>
-</mat-card>
+<ul *ngIf="repositories.length > 0">
+  <li *ngFor="let repo of repositories">
+    <a [href]="repo.html_url" target="_blank">{{ repo.name }}</a>
+    <p>{{ repo.description || 'Sem descrição' }}</p>
+  </li>
+</ul>

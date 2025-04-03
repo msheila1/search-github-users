@@ -22,7 +22,6 @@
     </mat-select>
   </mat-form-field>
   
-
   <!-- Lista de usuários -->
   <ng-container *ngIf="!!users && users.length > 0; else noResults">
     <div class="user-grid">
@@ -51,7 +50,9 @@
 
         <!-- Botão para acessar repositórios -->
         <mat-card-actions>
-          <button (click)="goToRepository(user.login)">Ver Repositório</button>
+          <a mat-button color="primary" [routerLink]="['/repository', user.login]">
+            Ver Repositórios
+          </a>
         </mat-card-actions>
       </mat-card>
     </div>

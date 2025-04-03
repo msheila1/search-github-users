@@ -46,10 +46,10 @@ export class GithubService {
    * @param owner Nome do usuário no GitHub
    * @returns Observable com a lista de repositórios
    */
-  getUserRepositories(owner: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.API_URL}/users/${owner}/repos`, { headers: this.getHeaders() });
-  }
-
+  getUserRepositories(username: string) {
+    return this.http.get<any[]>(`https://api.github.com/users/${username}/repos`);
+  }  
+  
   /**
    * Obtém detalhes de um repositório específico.
    * @param owner Nome do dono do repositório

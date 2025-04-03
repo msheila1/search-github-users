@@ -1,6 +1,7 @@
 export interface Repository {
   id: number
   name: string
+  username: string
   full_name: string
   description: string
   language?: string
