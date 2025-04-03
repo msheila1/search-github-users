@@ -1,11 +1,13 @@
 export interface GithubUser {
-    login: string;            // Username
-    name?: string;            // Name
-    bio?: string;             // Description
-    followers: number;        // Followers
-    following: number;        // Following
-    public_repos?: number;    // Stars (número de repositórios públicos, pois o GitHub não fornece estrelas diretamente no endpoint de usuários)
-    location?: string;        // Location
-    avatar_url: string;       // Profile Image
+  id: number
+  login: string
+  name?: string
+  bio?: string
+  followers: number
+  following: number
+  public_repos: number
+  location?: string
+  avatar_url: string
+  html_url: string
   }
   

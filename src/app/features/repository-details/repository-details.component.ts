@@ -1,19 +1,28 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GithubService } from '../../core/services/github.service';
-import { Repository } from '../../core/models/repository.model';
 import { CommonModule } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { Repository } from '../../core/models/repository.model';
 
 @Component({
-  selector: 'app-repository-details',
+  selector: 'app-repository-detail',
   standalone: true,
-  imports: [CommonModule, MatProgressSpinnerModule],
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatButtonModule,
+    MatProgressSpinnerModule
+  ],
   templateUrl: './repository-details.component.html',
   styleUrls: ['./repository-details.component.scss'],
+  providers: [GithubService]
 })
-export class RepositoryDetailsComponent implements OnInit {
-  repository!: Repository;
+export class RepositoryDetailComponent implements OnInit {
+  repository: Repository | null = null;
+  login: string = '';
   loading: boolean = false;
   error: string = '';
 
@@ -23,28 +32,42 @@ export class RepositoryDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.route.paramMap.subscribe((params) => {
-      const owner = params.get('owner'); // ✅ Certifique-se de que isso está retornando algo
-      const repo = params.get('repo');
+    this.route.paramMap.subscribe(params => {
+      this.login = params.get('login') || '';
+      console.log('🔹 Login recebido na URL:', this.login);
 
-      if (owner && repo) {
-        this.loading = true;
-        console.log(`Buscando repositório: ${owner}/${repo}`);
-
-        this.githubService.getRepositoryDetails(owner, repo).subscribe({
-          next: (data) => {
-            this.repository = data;
-            this.loading = false;
-          },
-          error: (err) => {
-            console.error('Erro ao buscar repositório:', err);
-            this.error = 'Erro ao carregar os detalhes do repositório.';
-            this.loading = false;
-          },
-        });
+      if (this.login) {
+        this.fetchRepository();
       } else {
-        this.error = 'Parâmetros inválidos na URL.';
+        this.error = 'Usuário não encontrado!';
       }
     });
+  }
+
+  fetchRepository() {
+    this.loading = true;
+    this.error = '';
+
+    this.githubService.getUserRepositories(this.login).subscribe({
+      next: (repos) => {
+        console.log('🔹 Repositórios encontrados:', repos);
+        if (repos.length > 0) {
+          this.repository = repos[0];
+        } else {
+          this.error = 'Nenhum repositório encontrado.';
+          this.repository = null;
+        }
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('❌ Erro ao buscar repositórios:', err);
+        this.error = 'Erro ao carregar os repositórios.';
+        this.repository = null;
+        this.loading = false;
+      }
+    });
+  }
+  openRepositoryUrl(url: string) {
+    window.open(url, '_blank');
   }
 }

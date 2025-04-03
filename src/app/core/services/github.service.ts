@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment'; // Certifique-se de que o environment está configurado corretamente
+import { GithubUser } from '../github-user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -35,9 +36,10 @@ export class GithubService {
    * @param username Nome do usuário no GitHub
    * @returns Observable com os detalhes do usuário
    */
-  getUserDetails(username: string): Observable<any> {
-    return this.http.get<any>(`${this.API_URL}/users/${username}`, { headers: this.getHeaders() });
+  getUserDetails(username: string): Observable<GithubUser> {
+    return this.http.get<GithubUser>(`${this.API_URL}/users/${username}`, { headers: this.getHeaders() });
   }
+  
 
   /**
    * Obtém os repositórios públicos de um usuário no GitHub.

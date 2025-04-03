@@ -1,35 +1,21 @@
-<div class="repository-details-container">
-  <h1>🔍 Detalhes do Repositório</h1>
-
-  <!-- Loader -->
-  <div *ngIf="loading" class="loading-container">
-    <mat-spinner></mat-spinner>
-    <p>Carregando...</p>
-  </div>
-
-  <!-- Mensagem de erro -->
-  <p *ngIf="error" class="error-message">{{ error }}</p>
-
-  <!-- Dados do repositório -->
-  <div *ngIf="!loading && repository" class="repository-details">
-    <h2>{{ repository.name }}</h2>
-    <p class="description">
-      {{ repository.description || '📄 Sem descrição disponível' }}
-    </p>
-
-    <div class="stats">
-      <p>⭐ Stars: <strong>{{ repository.stargazers_count }}</strong></p>
-      <p>🍴 Forks: <strong>{{ repository.forks_count }}</strong></p>
-      <p>👀 Watchers: <strong>{{ repository.watchers_count }}</strong></p>
-    </div>
-
-    <p>📅 Criado em: {{ repository.created_at | date:'dd/MM/yyyy' }}</p>
-    <p>🔄 Última atualização: {{ repository.updated_at | date:'dd/MM/yyyy' }}</p>
-
-    <p *ngIf="repository.owner">👤 Dono: <strong>{{ repository.owner.login }}</strong></p>
-
-    <a [href]="repository.html_url" target="_blank" class="github-link">
-      🔗 Ver no GitHub
-    </a>
-  </div>
+<div *ngIf="loading" class="loading">
+  <mat-spinner></mat-spinner>
 </div>
+
+<div *ngIf="error" class="error-message">
+  {{ error }}
+</div>
+
+<mat-card *ngIf="repository">
+  <mat-card-header>
+    <mat-card-title>{{ repository.name }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <p><strong>Descrição:</strong> {{ repository.description || 'Sem descrição' }}</p>
+    <p><strong>Estrelas:</strong> {{ repository.stargazers_count }}</p>
+    <p><strong>Forks:</strong> {{ repository.forks_count }}</p>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-button color="primary" (click)="openRepositoryUrl(repository.html_url)">Ver no GitHub</button>
+  </mat-card-actions>
+</mat-card>

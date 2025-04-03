@@ -9,13 +9,27 @@
   <!-- Mensagem de erro -->
   <p *ngIf="error" class="error">{{ error }}</p>
 
+  <!-- Campo de ordenação -->
+  <mat-form-field appearance="outline">
+    <mat-label>Ordenar por</mat-label>
+    <mat-select [(ngModel)]="sortBy" (selectionChange)="sortUsers()">
+      <mat-option value="followers-desc">Mais seguidores</mat-option>
+      <mat-option value="followers-asc">Menos seguidores</mat-option>
+      <mat-option value="name-asc">Nome (A-Z)</mat-option>
+      <mat-option value="name-desc">Nome (Z-A)</mat-option>
+      <mat-option value="stars-asc">Estrelas (Menos)</mat-option>
+      <mat-option value="stars-desc">Estrelas (Mais)</mat-option>
+    </mat-select>
+  </mat-form-field>
+  
+
   <!-- Lista de usuários -->
   <ng-container *ngIf="!!users && users.length > 0; else noResults">
     <div class="user-grid">
-      <mat-card *ngFor="let user of users" class="user-card">
+      <mat-card *ngFor="let user of paginatedUsers" class="user-card">
         <!-- Avatar -->
         <img mat-card-image 
-          [src]="user.avatar_url" 
+          [src]="user.profile_image" 
           [alt]="'Foto de ' + (user.name ? user.name : user.login)" 
           class="user-avatar" />
 
@@ -28,28 +42,27 @@
         </mat-card-header>
 
         <mat-card-content>
-          <!-- Biografia -->
-          <p>{{ user.bio }}</p>
-
-          <!-- Localização -->
-          <p>{{ user.location }}</p>
-
-          <!-- Estatísticas -->
-          <div class="user-stats">
-            <span>👥 Seguidores: {{ user.followers }}</span>
-            <span>🔄 Seguindo: {{ user.following }}</span>
-            <span>⭐ Repositórios Públicos: {{ user.public_repos }}</span>
-          </div>
+          <p>📍 Localização: {{ user.location }}</p>
+          <p>📖 Bio: {{ user.bio }}</p>
+          <p>👥 Seguidores: {{ user.followers }}</p>
+          <p>🔄 Seguindo: {{ user.following }}</p>
+          <p>⭐ Repositórios Públicos: {{ user.stars }}</p>
         </mat-card-content>
 
         <!-- Botão para acessar repositórios -->
         <mat-card-actions>
-          <button mat-button color="primary" (click)="navigateToRepository(user)">
-            Ver Repositórios
-          </button>
+          <button (click)="goToRepository(user.login)">Ver Repositório</button>
         </mat-card-actions>
       </mat-card>
     </div>
+
+    <!-- Paginação -->
+    <mat-paginator
+      [length]="totalResults"
+      [pageSize]="pageSize"
+      [pageIndex]="pageIndex"
+      (page)="onPageChange($event)">
+    </mat-paginator>
   </ng-container>
 
   <!-- Caso não tenha resultados -->
