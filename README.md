@@ -1,59 +1,134 @@
-# SearchGithubUser
+# 🔍 SearchGithubUser
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.5.
+SearchGithubUser é uma aplicação desenvolvida com Angular 19 e Angular Material que permite buscar usuários e repositórios do GitHub. A interface é responsiva e a navegação flui entre páginas de busca, listagem de resultados e detalhes dos repositórios.
 
-## Development server
+## 📦 Tecnologias Utilizadas
 
-To start a local development server, run:
+- [Angular CLI 19.2.5](https://github.com/angular/angular-cli)
+- [Angular Material](https://material.angular.io/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [RxJS](https://rxjs.dev/)
+- [SCSS](https://sass-lang.com/)
+- [Jasmine + Karma](https://karma-runner.github.io/latest/index.html) (testes unitários)
+- [Protractor ou Cypress](https://www.cypress.io/) (testes E2E)
+
+---
+
+## 🚀 Instalação e Execução
+
+1. **Clone o repositório:**
+
+```bash
+git clone https://github.com/msheila1/search-github-user.git
+cd search-github-user
+```
+
+2. **Instale as dependências:**
+
+```bash
+npm install
+```
+
+3. **Execute o servidor de desenvolvimento:**
 
 ```bash
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Acesse: [http://localhost:4200](http://localhost:4200)
 
-## Code scaffolding
+---
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## 🧭 Funcionalidades
 
-```bash
-ng generate component component-name
+- ✅ Página inicial com campo de busca por nome de usuário
+- ✅ Listagem de repositórios com paginação e ordenação (por estrelas, data de criação etc.)
+- ✅ Página de detalhes com informações completas do repositório selecionado
+- ✅ Layout responsivo e acessível (WCAG)
+- ✅ Tratamento de erros (usuário não encontrado, falhas de rede etc.)
+
+---
+
+## 📁 Estrutura de Pastas
+
+```
+src/
+├── app/
+│   ├── components/
+│   ├── pages/
+│   │   ├── search/
+│   │   ├── results/
+│   │   └── repository-detail/
+│   ├── services/
+│   ├── models/
+│   └── app-routing.module.ts
+├── assets/
+└── environments/
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+---
 
-```bash
-ng generate --help
-```
+## 🧪 Testes
 
-## Building
+### Testes Unitários
 
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+Execute os testes unitários com Karma:
 
 ```bash
 ng test
 ```
 
-## Running end-to-end tests
+### Testes End-to-End
 
-For end-to-end (e2e) testing, run:
+Execute os testes e2e com:
 
 ```bash
 ng e2e
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+> Caso esteja utilizando Cypress, utilize o comando `npx cypress open` ou `npx cypress run`.
 
-## Additional Resources
+---
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## ⚙️ Build de Produção
+
+Para compilar o projeto para produção:
+
+```bash
+ng build --configuration production
+```
+
+Os artefatos gerados estarão disponíveis na pasta `dist/`.
+
+---
+
+## 🔗 Integrações
+
+- API oficial do GitHub: [https://api.github.com](https://api.github.com)
+
+---
+
+## 📌 Requisitos para Contribuir
+
+1. Fork este repositório
+2. Crie uma branch com sua feature: `git checkout -b feature/nome-da-feature`
+3. Commit suas mudanças: `git commit -m 'Adiciona nova feature'`
+4. Push para o branch: `git push origin feature/nome-da-feature`
+5. Crie um Pull Request
+
+---
+
+## 👩‍💻 Desenvolvido por
+
+**Maria Sheila Carneiro**  
+PhD. MSc in IT and Knowledge Management  
+Software Engineer | Frontend Developer | Engineering Manager | Tech Lead | Data Scientist and Researcher
+
+- 🌐 [LinkedIn](https://www.linkedin.com/in/sheilascarneiro/)  
+- 💻 [GitHub](https://github.com/msheila1)
+
+---
+
+## 📃 Licença
+
+Este projeto está licenciado sob a [MIT License](LICENSE).
