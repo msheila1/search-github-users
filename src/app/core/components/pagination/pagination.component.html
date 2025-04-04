@@ -1,0 +1,9 @@
+<mat-paginator
+  id="paginator"
+  data-cy="paginator"
+  [length]="totalResults"
+  [pageSize]="pageSize"
+  [pageIndex]="currentPage"
+  [pageSizeOptions]="[10, 25, 50, 100]"
+  (page)="handlePageChange($event)">
+</mat-paginator>

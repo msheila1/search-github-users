@@ -1,0 +1,18 @@
+{
+    "total_count": 1,
+    "items": [
+      {
+        "id": 123456,
+        "login": "torvalds",
+        "avatar_url": "https://avatars.githubusercontent.com/u/1024025?v=4",
+        "html_url": "https://github.com/torvalds",
+        "name": "Linus Torvalds",
+        "bio": "Criador do Linux",
+        "followers": 100000,
+        "following": 5,
+        "public_repos": 10,
+        "location": "Portland, OR"
+      }
+    ]
+  }
+  

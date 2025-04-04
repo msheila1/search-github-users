@@ -1,0 +1,12 @@
+<mat-form-field appearance="outline" class="sort-field" data-cy="sort-field">
+    <mat-label>Ordenar por</mat-label>
+    <mat-select [ngModel]="sortBy" (selectionChange)="onSortChange($event.value)" data-cy="sort-select">
+      <mat-option value="followers-desc" data-cy="sort-followers-desc">Mais seguidores</mat-option>
+      <mat-option value="followers-asc" data-cy="sort-followers-asc">Menos seguidores</mat-option>
+      <mat-option value="name-asc" data-cy="sort-name-asc">Nome (A-Z)</mat-option>
+      <mat-option value="name-desc" data-cy="sort-name-desc">Nome (Z-A)</mat-option>
+      <mat-option value="stars-asc" data-cy="sort-stars-asc">Estrelas (Menos)</mat-option>
+      <mat-option value="stars-desc" data-cy="sort-stars-desc">Estrelas (Mais)</mat-option>
+    </mat-select>
+  </mat-form-field>
+  

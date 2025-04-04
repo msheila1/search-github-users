@@ -1,21 +1,13 @@
-<mat-toolbar color="primary" class="header-toolbar">
-  <span class="logo" (click)="goToHome()">Search GitHub User</span>
+<mat-toolbar class="header-toolbar">
+  <div class="logo-container" (click)="goToHome()" data-cy="logo-container">
+    <img src="assets/github-logo.png" alt="GitHub Logo" class="github-logo">
+    <span class="logo-text">Search GitHub User</span>
+  </div>
 
   <span class="spacer"></span>
 
   <nav class="menu-desktop">
-    <button mat-button routerLink="/">Buscar</button>
-    <button mat-button routerLink="/results">Resultados</button>
-    <button mat-button routerLink="/repository/1">Detalhes</button>
+    <button mat-button (click)="goToHome()" data-cy="btn-home">HOME</button>
   </nav>
-
-  <button mat-icon-button [matMenuTriggerFor]="menu" class="menu-mobile">
-    <mat-icon>menu</mat-icon>
-  </button>
-
-  <mat-menu #menu="matMenu">
-    <button mat-menu-item routerLink="/">Buscar</button>
-    <button mat-menu-item routerLink="/results">Resultados</button>
-    <button mat-menu-item routerLink="/repository/1">Detalhes</button>
-  </mat-menu>
 </mat-toolbar>
+

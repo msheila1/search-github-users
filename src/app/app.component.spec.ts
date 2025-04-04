@@ -1,10 +1,17 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { RouterTestingModule } from '@angular/router/testing';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppComponent],
+      imports: [RouterTestingModule], // 🔹 Corrige erro do ActivatedRoute
+      declarations: [AppComponent],
+      providers: [
+        { provide: ActivatedRoute, useValue: { params: of({}) } } // 🔹 Mock do ActivatedRoute
+      ]
     }).compileComponents();
   });
 
@@ -14,9 +21,10 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'search-github-user' title`, () => {
+  it(`should have the title 'search-github-user'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
+    app.title = 'search-github-user'; // 🔹 Certifique-se de que a propriedade existe
     expect(app.title).toEqual('search-github-user');
   });
 

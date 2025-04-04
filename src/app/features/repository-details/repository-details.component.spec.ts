@@ -1,23 +1,21 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 import { RepositoryDetailsComponent } from './repository-details.component';
 
 describe('RepositoryDetailsComponent', () => {
-  let component: RepositoryDetailsComponent;
-  let fixture: ComponentFixture<RepositoryDetailsComponent>;
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RepositoryDetailsComponent]
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(RepositoryDetailsComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+      declarations: [RepositoryDetailsComponent],
+      providers: [
+        { provide: ActivatedRoute, useValue: { params: of({}) } } // 🔹 Mock de ActivatedRoute
+      ]
+    }).compileComponents();
   });
 
   it('should create', () => {
+    const fixture = TestBed.createComponent(RepositoryDetailsComponent);
+    const component = fixture.componentInstance;
     expect(component).toBeTruthy();
   });
 });

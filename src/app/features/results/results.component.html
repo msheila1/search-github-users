@@ -1,73 +1,97 @@
 <div class="results-container">
-  <h1>🔍 Resultados da Busca</h1>
+  <h1 class="title" data-cy="title">🔍 Resultados da Busca</h1>
 
   <!-- Loader -->
-  <div *ngIf="loading" class="loading-container">
+  <div *ngIf="loading" class="loading-container" data-cy="loading-spinner">
     <mat-spinner></mat-spinner>
   </div>
 
-  <!-- Mensagem de erro -->
-  <p *ngIf="error" class="error">{{ error }}</p>
+  <!-- Error message -->
+  <mat-card *ngIf="error" class="error-card" data-cy="error-message">
+    <mat-icon class="error-icon">error</mat-icon>
+    <p>{{ error }}</p>
+  </mat-card>
 
-  <!-- Campo de ordenação -->
-  <mat-form-field appearance="outline">
-    <mat-label>Ordenar por</mat-label>
-    <mat-select [(ngModel)]="sortBy" (selectionChange)="sortUsers()">
-      <mat-option value="followers-desc">Mais seguidores</mat-option>
-      <mat-option value="followers-asc">Menos seguidores</mat-option>
-      <mat-option value="name-asc">Nome (A-Z)</mat-option>
-      <mat-option value="name-desc">Nome (Z-A)</mat-option>
-      <mat-option value="stars-asc">Estrelas (Menos)</mat-option>
-      <mat-option value="stars-desc">Estrelas (Mais)</mat-option>
-    </mat-select>
-  </mat-form-field>
-  
-  <!-- Lista de usuários -->
-  <ng-container *ngIf="!!users && users.length > 0; else noResults">
-    <div class="user-grid">
-      <mat-card *ngFor="let user of paginatedUsers" class="user-card">
-        <!-- Avatar -->
-        <img mat-card-image 
-          [src]="user.profile_image" 
-          [alt]="'Foto de ' + (user.name ? user.name : user.login)" 
-          class="user-avatar" />
+  <!-- Sort field -->
+  <app-sort-selector
+    [sortBy]="sortBy"
+    (sortChange)="onSortChange($event)"
+    data-cy="sort-field"
+  >
+  </app-sort-selector>
 
-        <!-- Informações do usuário -->
-        <mat-card-header>
-          <mat-card-title>
+  <!-- User list -->
+  <ng-container *ngIf="users && users.length > 0; else noResults">
+    <div class="user-grid" data-cy="user-grid">
+      <div
+        *ngFor="let user of paginatedUsers"
+        class="user-card"
+        data-cy="user-card"
+      >
+        <div class="avatar-container">
+          <img
+            [src]="user.profile_image"
+            [alt]="'Foto de ' + (user.name ? user.name : user.login)"
+            class="user-avatar"
+            data-cy="user-avatar"
+          />
+        </div>
+        <div class="user-info">
+          <h3 class="user-name" data-cy="user-name">
             {{ user.name ? user.name : user.login }}
-          </mat-card-title>
-          <mat-card-subtitle>{{ user.login }}</mat-card-subtitle>
-        </mat-card-header>
-
-        <mat-card-content>
-          <p>📍 Localização: {{ user.location }}</p>
-          <p>📖 Bio: {{ user.bio }}</p>
-          <p>👥 Seguidores: {{ user.followers }}</p>
-          <p>🔄 Seguindo: {{ user.following }}</p>
-          <p>⭐ Repositórios Públicos: {{ user.stars }}</p>
-        </mat-card-content>
-
-        <!-- Botão para acessar repositórios -->
-        <mat-card-actions>
-          <a mat-button color="primary" [routerLink]="['/repository', user.login]">
-            Ver Repositórios
-          </a>
-        </mat-card-actions>
-      </mat-card>
+          </h3>
+          <p class="user-login" data-cy="user-login">{{ user.login }}</p>
+        </div>
+        <div class="user-content">
+          <p>
+            <mat-icon class="icon">location_on</mat-icon>
+            <span data-cy="user-location">{{
+              user.location || "Não informada"
+            }}</span>
+          </p>
+          <p>
+            <mat-icon class="icon">menu_book</mat-icon>
+            <span data-cy="user-bio">{{ user.bio || "Sem descrição" }}</span>
+          </p>
+          <p>
+            <mat-icon class="icon">group</mat-icon>
+            <span data-cy="user-followers"
+              >{{ user.followers }} seguidores</span
+            >
+          </p>
+          <p>
+            <mat-icon class="icon">sync</mat-icon>
+            <span data-cy="user-following">Seguindo {{ user.following }}</span>
+          </p>
+          <p>
+            <mat-icon class="icon">star</mat-icon>
+            <span data-cy="user-stars">{{ user.stars }} repositórios</span>
+          </p>
+        </div>
+        <a
+          mat-button
+          class="repo-button"
+          [routerLink]="['/repository', user.login]"
+          data-cy="repo-button"
+        >
+          <mat-icon>folder_open</mat-icon> Ver Repositórios
+        </a>
+      </div>
     </div>
 
-    <!-- Paginação -->
-    <mat-paginator
-      [length]="totalResults"
+    <!-- Pagination -->
+    <app-pagination
+      [totalResults]="totalResults"
       [pageSize]="pageSize"
-      [pageIndex]="pageIndex"
-      (page)="onPageChange($event)">
-    </mat-paginator>
+      (pageChange)="onPageChange($event)">
+    </app-pagination>
+
   </ng-container>
 
-  <!-- Caso não tenha resultados -->
   <ng-template #noResults>
-    <p class="no-results">Nenhum usuário encontrado.</p>
+    <mat-card class="no-results-card" data-cy="no-results">
+      <mat-icon class="no-results-icon">search_off</mat-icon>
+      <p class="no-results-text">Nenhum usuário encontrado.</p>
+    </mat-card>
   </ng-template>
 </div>

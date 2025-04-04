@@ -11,7 +11,7 @@ export interface User {
       location?: string;
       html_url: string;
       profile_image?: string;
-      stars?: number;  // Opcional
-      repos?: any[];   // Opcional
+      stars?: number;
+      repos?: any[];
     }
     

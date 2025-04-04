@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Params, Router, RouterModule } from '@angular/router';
 import { GithubService } from '../../core/services/github.service';
-import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -11,6 +11,8 @@ import { User } from '../../core/models/user.model';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
+import { SortSelectorComponent } from '../../core/components/sort-selector/sort-selector.component';
+import { PaginationComponent } from '../../core/components/pagination/pagination.component';
 
 @Component({
   selector: 'app-results',
@@ -24,8 +26,9 @@ import { FormsModule } from '@angular/forms';
     MatFormFieldModule,
     MatSelectModule,
     FormsModule,
-    MatPaginatorModule,
-    RouterModule
+    RouterModule,
+    SortSelectorComponent,
+    PaginationComponent 
   ],
   templateUrl: './results.component.html',
   styleUrls: ['./results.component.scss'],
@@ -55,6 +58,8 @@ export class ResultsComponent implements OnInit {
       if (params['q']) {
         this.searchQuery = params['q'].trim();
         this.pageIndex = params['page'] ? +params['page'] - 1 : 0;
+        this.pageSize = params['pageSize'] ? +params['pageSize'] : 10;
+        this.sortBy = params['sortBy'] || 'followers-desc'; 
         this.fetchUsers();
       }
     });
@@ -124,13 +129,25 @@ export class ResultsComponent implements OnInit {
   onPageChange(event: PageEvent) {
     this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
+  
+    const queryParams: Params = {
+      q: this.searchQuery,
+      page: event.pageIndex + 1,
+      pageSize: this.pageSize, // Atualiza automaticamente
+      sortBy: this.sortBy
+    };
+  
+    this.router.navigate(['/results'], { queryParams });
+  }
+  
+  onSortChange(newSort: string) {
+    this.sortBy = newSort;
+    this.sortUsers();
 
-    this.router.navigate([], {
-      queryParams: { q: this.searchQuery, page: this.pageIndex + 1 },
-      queryParamsHandling: 'merge',
+    this.router.navigate([], { 
+      queryParams: { q: this.searchQuery, page: 1, pageSize: this.pageSize, sortBy: this.sortBy },
+      queryParamsHandling: 'merge'
     });
-
-    this.updatePaginatedUsers();
   }
 
   sortUsers() {

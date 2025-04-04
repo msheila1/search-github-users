@@ -1,17 +1,227 @@
-.search-container {
+$primary-color: #1976d2;
+$secondary-color: #1565c0;
+$text-color: #2c3e50;
+$light-gray: #f5f5f5;
+$card-gray: #e0e0e0;
+$border-radius: 12px;
+@use "sass:color";
+
+.intro-container {
+  text-align: center;
+  max-width: 600px;
+  margin: 30px auto;
+  padding: 20px;
+  background: $light-gray;
+  border-radius: $border-radius;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+  .intro-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: $text-color;
+    margin-bottom: 10px;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 16px;
-    margin-top: 20px;
+    justify-content: center;
+    gap: 8px;
+
+    i {
+      color: $primary-color;
+    }
   }
-  
-  mat-form-field {
+
+  .intro-text {
+    font-size: 16px;
+    color: #555;
+    line-height: 1.5;
+  }
+}
+.search-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  max-width: 600px;
+  margin: 20px auto;
+  background: #ffffff;
+  padding: 15px;
+  border-radius: $border-radius;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+  .search-field {
+    flex: 1;
+    min-width: 250px;
+    position: relative;
+
+    input {
+      padding-right: 40px;
+    }
+
+    .search-icon {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 18px;
+      color: #555;
+      cursor: pointer;
+    }
+  }
+
+  .search-button {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 12px 18px;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+      background: $secondary-color;
+      transform: translateY(-2px);
+    }
+
+    i {
+      font-size: 18px;
+    }
+  }
+}
+.user-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 50px;
+  padding: 10px;
+  margin-bottom: 40px;
+}
+.user-card {
+  background: $card-gray;
+  border-radius: $border-radius;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  padding: 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.15);
+  }
+  .user-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .user-info {
+    margin: 10px 0;
+    text-align: center;
+
+    .user-name {
+      font-size: 22px;
+      font-weight: bold;
+      color: $text-color;
+    }
+
+    .user-login {
+      font-size: 16px;
+      font-weight: bold;
+      color: #555;
+    }
+  }
+
+  .user-content {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    padding: 12px;
+    background: color.adjust($card-gray, $lightness: -5%);
+    border-radius: 8px;
     width: 100%;
-    max-width: 400px;
+    text-align: left;
+    flex: 1;
+
+    p {
+      margin: 12px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .icon {
+      font-size: 20px;
+      color: $primary-color;
+    }
   }
-  
-  button {
-    width: 200px;
+
+  .repo-button {
+    background: $primary-color;
+    color: white;
+    padding: 14px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease-in-out;
+    text-decoration: none;
+    width: 100%;
+    text-transform: uppercase;
+    margin-top: auto;
+
+    &:hover {
+      background: $secondary-color;
+      transform: translateY(-2px);
+    }
+
+    i {
+      font-size: 20px;
+    }
   }
-  
+}
+
+mat-paginator {
+  margin-top: 20px;
+}
+
+.no-results-card {
+  background-color: #f1f1f1;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+
+  .no-results-icon {
+    font-size: 40px;
+    color: #999;
+    margin-bottom: 10px;
+  }
+
+  .no-results-text {
+    font-size: 16px;
+    color: #555;
+  }
+}
+
+@media (max-width: 768px) {
+  .search-container {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .search-button {
+    width: 100%;
+  }
+
+  .user-grid {
+    gap: 30px;
+  }
+}

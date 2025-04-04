@@ -1,16 +1,67 @@
-<h2>Repositórios de {{ username }}</h2>
+<div class="container">
+  <h2 class="title">
+    <i class="fas fa-folder"></i> Repositórios de {{ username }}
+  </h2>
+  
+  <!-- Loader -->
+  <div class="loading" *ngIf="loading">
+    <mat-spinner></mat-spinner>
+  </div>
 
-<div *ngIf="loading">
-  <mat-spinner></mat-spinner>
+  <!-- Error message -->
+  <div class="error" *ngIf="error" data-testid="error-message-container">
+    <mat-card class="error-card" data-testid="error-message">
+      <mat-icon class="error-icon">error</mat-icon>
+      <p>{{ error }}</p>
+    </mat-card>
+  </div>
+
+  <div *ngIf="!loading && repositories.length === 0">
+    <mat-card class="no-data-card">
+      <mat-icon class="info-icon">info</mat-icon>
+      <p>Nenhum repositório encontrado.</p>
+    </mat-card>
+  </div>
+
+  <!-- List of repositories -->
+  <div class="repo-list" *ngIf="repositories.length > 0">
+    <mat-card
+      class="repository-card animate"
+      *ngFor="let repo of repositories"
+      data-testid="repository-card"
+    >
+      <mat-card-header class="repo-header">
+        <mat-card-title class="repo-name" data-testid="repository-name">
+          <mat-icon class="repo-icon" aria-label="Repositório">folder</mat-icon>
+          {{ repo.name }}
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p class="repo-stars" data-testid="repository-stars">
+          <mat-icon>star</mat-icon> {{ repo.stargazers_count }} estrelas
+        </p>
+        <p data-testid="repository-description">
+          {{ repo.description || "Sem descrição" }}
+        </p>
+      </mat-card-content>
+      <mat-card-actions align="end">
+        <a
+          mat-button
+          color="primary"
+          [href]="repo.html_url"
+          target="_blank"
+          data-testid="repository-link"
+        >
+          <mat-icon>open_in_new</mat-icon> Ver no GitHub
+        </a>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+  <!-- Error message -->
+  <div class="error" *ngIf="error" data-testid="error-message-container">
+    <mat-card class="error-card error-message" data-testid="error-message">
+      <mat-icon class="error-icon">error</mat-icon>
+      <p>{{ error }}</p>
+    </mat-card>
+  </div>
 </div>
-
-<div *ngIf="error">
-  <p class="error">{{ error }}</p>
-</div>
-
-<ul *ngIf="repositories.length > 0">
-  <li *ngFor="let repo of repositories">
-    <a [href]="repo.html_url" target="_blank">{{ repo.name }}</a>
-    <p>{{ repo.description || 'Sem descrição' }}</p>
-  </li>
-</ul>

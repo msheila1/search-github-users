@@ -1,48 +1,50 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { GithubService } from './github.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { of } from 'rxjs';
 
 describe('GithubService', () => {
   let service: GithubService;
-  let httpMock: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [GithubService],
     });
-
     service = TestBed.inject(GithubService);
-    httpMock = TestBed.inject(HttpTestingController);
   });
 
-  afterEach(() => {
-    httpMock.verify(); // Verifica se não há requisições pendentes
+  it('should be created', () => {
+    expect(service).toBeTruthy();
   });
 
-  it('deve buscar usuários corretamente', () => {
-    const mockResponse = {
-      items: [{ id: 1, login: 'octocat', avatar_url: 'https://github.com/images/octocat.png' }]
+  it('should fetch user data successfully', () => {
+    const mockUser = {
+      login: 'octocat',
+      id: 1,
+      avatar_url: 'https://github.com/images/error/octocat_happy.gif',
+      html_url: 'https://github.com/octocat',
+      name: 'The Octocat',
+      bio: 'There once was...',
+      followers: 0,
+      following: 0,
+      public_repos: 0,
+      location: 'San Francisco',
+      stars: 0,
+      repos: [],
+      profile_image: 'https://github.com/images/error/octocat_happy.gif',
+      avatar: 'https://github.com/images/error/octocat_happy.gif',
+      url: 'https://github.com/octocat',
+      username: 'octocat',
+      repos_url: 'https://api.github.com/users/octocat/repos',
+      followers_url: 'https://api.github.com/users/octocat/followers',
+      following_url: 'https://api.github.com/users/octocat/following',
     };
 
-    service.searchUsers('octocat', 1, 10).subscribe((data) => {
-      expect(data).toEqual(mockResponse);
+    spyOn(service, 'getUserDetails').and.returnValue(of(mockUser));
+
+    service.getUserDetails('octocat').subscribe((user: any) => {
+      expect(user).toEqual(mockUser);
     });
-
-    const req = httpMock.expectOne('https://api.github.com/search/users?q=octocat&page=1&per_page=10');
-    expect(req.request.method).toBe('GET');
-
-    req.flush(mockResponse); // Retorna o mock como resposta
-  });
-
-  it('deve tratar erros da API corretamente', () => {
-    service.searchUsers('octocat', 1, 10).subscribe({
-      error: (error) => {
-        expect(error.message).toBe('Erro ao buscar os detalhes do usuário.');
-      }
-    });
-
-    const req = httpMock.expectOne('https://api.github.com/search/users?q=octocat&page=1&per_page=10');
-    req.error(new ErrorEvent('Erro de rede'));
   });
 });

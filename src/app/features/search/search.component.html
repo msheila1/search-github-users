@@ -1,10 +1,35 @@
-<mat-toolbar color="primary">Busca de Repositórios</mat-toolbar>
+<div class="intro-container">
+  <h2 class="intro-title" data-cy="search-title">
+    Encontre Desenvolvedores e Repositórios!
+  </h2>
+  <p class="intro-text" data-cy="search-description">
+    Digite um nome de usuário do GitHub no campo abaixo e descubra perfis, seguidores e repositórios públicos.  
+    Explore o mundo do código aberto de forma rápida e intuitiva!
+  </p>
+</div>
 
 <div class="search-container">
-  <mat-form-field appearance="outline">
-    <mat-label>Pesquisar Repositório</mat-label>
-    <input matInput [(ngModel)]="searchQuery" (keyup.enter)="search()" />
+  <mat-form-field appearance="outline" class="search-field">
+    <mat-label>Pesquisar Usuário do GitHub</mat-label>
+    <input 
+      matInput 
+      [(ngModel)]="searchQuery" 
+      (keyup.enter)="search()" 
+      aria-label="Digite o nome do usuário do GitHub" 
+      data-cy="search-input"
+    />
+    <span matSuffix>
+      <mat-icon>search</mat-icon>
+    </span>
   </mat-form-field>
 
-  <button mat-raised-button color="accent" (click)="search()">Buscar</button>
+  <button 
+    mat-raised-button 
+    color="primary" 
+    class="search-button" 
+    (click)="search()" 
+    data-cy="search-button"
+  >
+    Buscar
+  </button>
 </div>

@@ -1,0 +1,15 @@
+.sort-field {
+    width: 100%;
+    max-width: 300px;
+  
+    mat-form-field {
+      width: 100%;
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .sort-field {
+      max-width: 100%;
+    }
+  }
+  

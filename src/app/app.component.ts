@@ -13,7 +13,9 @@ import { FooterComponent } from './core/components/footer/footer.component';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {}
+export class AppComponent {
+  title = 'search-github-user';
+}
 
 bootstrapApplication(AppComponent, {
   providers: [provideRouter(routes)],

@@ -5,6 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-search',
@@ -14,7 +15,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatIconModule
   ],
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss'],
@@ -26,11 +28,13 @@ export class SearchComponent {
 
   search() {
     const trimmedQuery = this.searchQuery.trim();
-
+  
     if (trimmedQuery) {
-      this.router.navigate(['/results'], { queryParams: { q: trimmedQuery, page: 1 } });
+      setTimeout(() => {
+        this.router.navigate(['/results'], { queryParams: { q: trimmedQuery, page: 1 } });
+      }, 100);
     }
-  }
+  }  
 
   goToHome() {
     this.router.navigate(['/']);

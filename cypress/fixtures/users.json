@@ -1,0 +1,34 @@
+{
+    "total_count": 2,
+    "items": [
+      {
+        "id": 1,
+        "login": "torvalds",
+        "name": "Linus Torvalds",
+        "avatar_url": "https://github.com/torvalds.png",
+        "followers": 100000,
+        "following": 1,
+        "public_repos": 10,
+        "location": "Finlândia",
+        "bio": "Criador do Linux",
+        "html_url": "https://github.com/torvalds",
+        "repos": [],
+        "stars": 5000
+      },
+      {
+        "id": 2,
+        "login": "gaearon",
+        "name": "Dan Abramov",
+        "avatar_url": "https://github.com/gaearon.png",
+        "followers": 50000,
+        "following": 2,
+        "public_repos": 20,
+        "location": "EUA",
+        "bio": "Criador do Redux",
+        "html_url": "https://github.com/gaearon",
+        "repos": [],
+        "stars": 2000
+      }
+    ]
+  }
+  

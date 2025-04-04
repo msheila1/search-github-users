@@ -6,7 +6,9 @@ html, body {
     flex-direction: column;
     overflow-x: hidden;
   }
-  
+  * {
+    font-family: 'Poppins', sans-serif;
+  }
   app-root {
     display: flex;
     flex-direction: column;
