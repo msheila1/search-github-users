@@ -7,10 +7,10 @@ import { of } from 'rxjs';
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule], // 🔹 Corrige erro do ActivatedRoute
+      imports: [RouterTestingModule],
       declarations: [AppComponent],
       providers: [
-        { provide: ActivatedRoute, useValue: { params: of({}) } } // 🔹 Mock do ActivatedRoute
+        { provide: ActivatedRoute, useValue: { params: of({}) } }
       ]
     }).compileComponents();
   });
@@ -24,7 +24,7 @@ describe('AppComponent', () => {
   it(`should have the title 'search-github-user'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    app.title = 'search-github-user'; // 🔹 Certifique-se de que a propriedade existe
+    app.title = 'search-github-user';
     expect(app.title).toEqual('search-github-user');
   });
 

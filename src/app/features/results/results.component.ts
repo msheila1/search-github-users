@@ -133,7 +133,7 @@ export class ResultsComponent implements OnInit {
     const queryParams: Params = {
       q: this.searchQuery,
       page: event.pageIndex + 1,
-      pageSize: this.pageSize, // Atualiza automaticamente
+      pageSize: this.pageSize,
       sortBy: this.sortBy
     };
   

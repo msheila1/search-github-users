@@ -46,12 +46,12 @@ export class RepositoryDetailsComponent implements OnInit {
 
     this.githubService.getUserRepositories(this.username).subscribe({
       next: (repos) => {
-        console.log('✅ Repositórios carregados:', repos);
+        console.log('Repositórios carregados:', repos);
         this.repositories = repos || [];
         this.loading = false;
       },
       error: (err) => {
-        console.error('❌ Erro ao buscar repositórios:', err);
+        console.error('Erro ao buscar repositórios:', err);
         this.error = 'Erro ao carregar repositórios.';
         this.repositories = [];
         this.loading = false;
