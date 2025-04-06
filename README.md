@@ -1,6 +1,6 @@
-# 🔍 SearchGithubUser
+# 🔍 Search Github User
 
-SearchGithubUser é uma aplicação desenvolvida com Angular 19 e Angular Material que permite buscar usuários e repositórios do GitHub. A interface é responsiva e a navegação flui entre páginas de busca, listagem de resultados e detalhes dos repositórios.
+Search Github User é uma aplicação desenvolvida com Angular 19 e Angular Material que permite buscar usuários e repositórios do GitHub. A interface é responsiva e a navegação flui entre páginas de busca, listagem de resultados e detalhes dos repositórios.
 
 ## 📦 Tecnologias Utilizadas
 
